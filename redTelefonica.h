@@ -43,9 +43,9 @@ class redTelefonica{
 
 	void seleccionarModo(modo modoAIniciar);
 
-	void agregarCelular(unsigned int numero,int ID, zonaCelu zonaActual);
+	void agregarCelular(unsigned int numero,int ID, zona zonaActual);
 
-	void agregarAntena(int ID,zonaAntena zonaACubrir,unsigned int capacidadMax);
+	void agregarAntena(int ID,zona zonaACubrir,unsigned int capacidadMax);
 
 	//MODO CELULAR------------------------------------------------------
 	//PRE destino debe ser valido y >0
