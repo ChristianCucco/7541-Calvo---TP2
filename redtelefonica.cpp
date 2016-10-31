@@ -1,12 +1,14 @@
 
+
 #include "redTelefonica.h"
+#include <iostream>
 
 
 redTelefonica::redTelefonica(){
-    this->celularesExistentes=new lista<celular>;
-    this->antenasExistentes=new lista<antena>;
-    this->mensajesEnCola=new lista<mensaje>;
-    this->llamadasActivas=new lista<llamadas>;
+    this->celularesExistentes=new lista<celular*>;
+    this->antenasExistentes=new lista<antena*>;
+    this->mensajesEnCola=new lista<mensaje*>;
+    this->llamadasActivas=new lista<llamadas*>;
     this->modoActual=aDefinir;
     this->celularActual=0;
 }
@@ -80,17 +82,21 @@ mensaje redTelefonica::enviarMensaje(unsigned int destino,std::string texto, uns
 
 void redTelefonica::detalleCelulares(int idCelular){
    this->celularesExistentes->iniciarCursor();
-   std::string mostrar = "";
    bool encontrado;
    while ((this->celularesExistentes->avanzarCursor())&&(!encontrado))
-    {   celularActual=this->celularesExistentes->obtenerCursor();
+    {
+        celularActual=celularesExistentes->obtenerCursor();
         encontrado=celularActual->celularID()==idCelular;}
     if (encontrado)
         {
-            //FALTA
+            std::cout<<"ID: "<<celularActual->celularID()<<std::endl;
+            std::cout<<"Numero: "<<celularActual->numeroDeCelular()<<std::endl;
+            std::cout<<"Zona Actual: "<<celularActual->enDondeEsta()<<std::endl;
+            std::cout<<"Estado Actual: "<<celularActual->obtenerEstado()<<std::endl;
+
         }
     else
 {
-        //FALTA
+        std::cout<<"No se encontro celular con ese ID"<<std::endl;
 }
   }
