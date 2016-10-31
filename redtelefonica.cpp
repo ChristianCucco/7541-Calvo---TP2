@@ -78,24 +78,19 @@ mensaje redTelefonica::enviarMensaje(unsigned int destino,std::string texto, uns
     return m;
 }
 
-std::string detalleCelulares(int idCelular)
-{   std::string mostrar = "";
-    (*celularesExistentes).iniciarCursor;
-    if *(this->(*celularesExistentes).obtenerCursor)!=NULL
-    {   bool sePuedeAvanzar=true;
-        while ((idCelular != *(this->(*celularesExistentes).obtenerCursor).celularID()) && (sePuedeAvanzar==true))
-            {
-                sePuedeAvanzar=((*celularesExistentes).avanzarCursor);
-            };
-    }
-    bool encontrado = (idCelular== *(this->(*celularesExistentes).obtenerCursor).celularID());
-    if (encontrado = true)
+void redTelefonica::detalleCelulares(int idCelular){
+   this->celularesExistentes->iniciarCursor();
+   std::string mostrar = "";
+   bool encontrado;
+   while ((this->celularesExistentes->avanzarCursor())&&(!encontrado))
+    {   celularActual=this->celularesExistentes->obtenerCursor();
+        encontrado=celularActual->celularID()==idCelular;}
+    if (encontrado)
         {
-            mostrar=celular.mostrarDetalleCelular();
+            //FALTA
         }
     else
-        {
-            mostrar="id no existente";
-        };
-    return mostrar;
+{
+        //FALTA
 }
+  }
