@@ -42,10 +42,30 @@ void celular::cambiarEstado(estado estadoNuevo){
 	this->estadoActual = estadoNuevo;
 }
 
-estado celular::obtenerEstado()
-    {return this-> estadoActual;}
+std::string celular::obtenerEstado()
+    {   std::string estado = "";
+        if (this->estado == 0) {estado="libre"; }
+        else {estado="ocupado";};
+        return estado;
+    }
 
-
+std::string celular::mostrarDetalleCelular()
+{
+    std::string id = "";
+    std::string numero = "";
+    std::string estado = "";
+    std::string ultimaAntenaConectada = "";
+    std::string cadena = "";
+    
+    id = static_cast<std::ostringstream*>(&(std::ostringstream() << this->celularID()))->str();
+    numero = static_cast<std::ostringstream*>(&(std::ostringstream() << this->numeroDeCelular()))->str();
+    estado = this->obtenerEstado();
+    
+    std::string cadena = "id: "+ id+" numero: "+numero+" estado: "+estado+" UltimaAntenaConectada: "+ultimaAntenaConectada;
+    
+    return cadena;
+    
+}
 
 //FALTAN POR HACER
 void celular::verHistorialMensajesRecibidos(){
