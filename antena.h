@@ -45,6 +45,12 @@ public:
 
 	void asignarCapacidadMax(unsigned int maximo);
 
+	int obtenerID();
+
+	zonaAntena obtenerAntena();
+
+	unsigned int obtenerCapacidadMaxima();
+
 	//POS devuelve si hay espacio restante para realizar acciones
 	bool quedaCapacidad();
 
