@@ -35,11 +35,11 @@ struct llamadas{// registro que guarda las llamadas activas
 class redTelefonica{
 	private:
 	modo modoActual;
-	lista<celular>* celularesExistentes;
-	lista<antena>* antenasExistentes;
+	lista<celular*>* celularesExistentes;
+	lista<antena*>* antenasExistentes;
 	celular* celularActual;//unicamente en modo celular
-	lista<mensaje>* mensajesEnCola;//guarda los mensajes a procesar
-	lista<llamadas>* llamadasActivas;
+	lista<mensaje*>* mensajesEnCola;//guarda los mensajes a procesar
+	lista<llamadas*>* llamadasActivas;
 
 	public:
 	redTelefonica();
