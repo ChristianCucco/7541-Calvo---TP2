@@ -56,6 +56,19 @@ this->capacidadMax=maximo;
 
 }
 
+int antena::obtenerID(){
+	    return this->ID;
+	}
+
+zonaAntena antena::obtenerAntena(){
+	return this->zonaCubierta;
+	}
+
+unsigned int antena::obtenerCapacidadMaxima(){
+	return this->capacidadMax;
+	}
+
+
 
 
 //FALTAN POR HACER
