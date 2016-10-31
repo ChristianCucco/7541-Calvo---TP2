@@ -102,7 +102,7 @@ class redTelefonica{
 
 	//PRE idCelular tiene que ser el id o celular del telefono
 	//POS muestra los detalles del celular correspondiente
-	std::string detalleCelulares(int idCelular);
+	void detalleCelulares(int idCelular);
 
 	void procesarArchivoMaestro();
 
