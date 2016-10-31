@@ -1,18 +1,16 @@
 
 /*
  * celular.cpp
- *
- *  Created on: 29/10/2016
- *      Author: Matias
  */
 
 #include "celulares.h"
 
-celular::celular(unsigned int numero,int ID,zonaCelu zona){
+celular::celular(unsigned int numero,int ID,zona zona){
 	this-> zonaActual = zona;
 	this-> numero = numero;
 	this-> estadoActual = LIBRE;
 	this->ID = ID;
+
 }
 
 void celular::asignarNumero(unsigned int numeroNuevo){
@@ -31,10 +29,10 @@ int celular::celularID()
     {return this-> ID;}
 
 
-zonaCelu celular::enDondeEsta()
+zona celular::enDondeEsta()
     {return this-> zonaActual;}
 
-void celular::cambiarDeZona(zonaCelu nuevaZona){
+void celular::cambiarDeZona(zona nuevaZona){
 	this->zonaActual = nuevaZona;
 }
 
@@ -42,30 +40,10 @@ void celular::cambiarEstado(estado estadoNuevo){
 	this->estadoActual = estadoNuevo;
 }
 
-std::string celular::obtenerEstado()
-    {   std::string estado = "";
-        if (this->estado == 0) {estado="libre"; }
-        else {estado="ocupado";};
-        return estado;
-    }
+estado celular::obtenerEstado()
+    {return this-> estadoActual;}
 
-std::string celular::mostrarDetalleCelular()
-{
-    std::string id = "";
-    std::string numero = "";
-    std::string estado = "";
-    std::string ultimaAntenaConectada = "";
-    std::string cadena = "";
-    
-    id = static_cast<std::ostringstream*>(&(std::ostringstream() << this->celularID()))->str();
-    numero = static_cast<std::ostringstream*>(&(std::ostringstream() << this->numeroDeCelular()))->str();
-    estado = this->obtenerEstado();
-    
-    std::string cadena = "id: "+ id+" numero: "+numero+" estado: "+estado+" UltimaAntenaConectada: "+ultimaAntenaConectada;
-    
-    return cadena;
-    
-}
+
 
 //FALTAN POR HACER
 void celular::verHistorialMensajesRecibidos(){
