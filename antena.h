@@ -7,10 +7,7 @@
 #include <string>
 #include "listaTemplate.h"
 #include "nodoTemplate.h"
-
-enum zonaAntena{
-
-};
+#include "celulares.h"
 
 struct estadisticas{
     unsigned int llamadasRealizadas;
@@ -25,7 +22,7 @@ struct estadisticas{
 class antena{
 private:
 	int ID; //Identificacion de la antena
-	zonaAntena zonaCubierta;
+	zona zonaCubierta;
 	unsigned int celularesMaxConectados;//al mismo tiempo
 	unsigned int llamadasAnuladas;
 	unsigned int capacidadMax;
@@ -35,19 +32,19 @@ private:
 public:
 	//PRE zonaACubrir debe existir en zona, capacidad positva
 	//POS crea una antena en la zonaACubrir
-	antena(int ID,zonaAntena zonaACubrir,unsigned int capacidadMax);
+	antena(int ID,zona zonaACubrir,unsigned int capacidadMax);
 	//POS bye bye antena
 	~antena();
 
 	void asignarID(int ID);
 
-	void asignarZona(zonaAntena zona);
+	void asignarZona(zona zona);
 
 	void asignarCapacidadMax(unsigned int maximo);
 
 	int obtenerID();
 
-	zonaAntena obtenerAntena();
+	zona obtenerAntena();
 
 	unsigned int obtenerCapacidadMaxima();
 
@@ -79,7 +76,7 @@ public:
 	lista<estadisticas>* obtenerEstadisticas();
 
 	//POS devuelve la zona
-	zonaAntena obtenerZonaCubierta();
+	zona obtenerZonaCubierta();
 };
 
 #endif /* ANTENA_H_ */
