@@ -1,4 +1,6 @@
-
+/*
+* redTelefonica.cpp
+*/
 
 #include "redTelefonica.h"
 #include <iostream>
@@ -22,11 +24,18 @@ void redTelefonica::agregarCelular(unsigned int numero,int ID, zonaCelu zonaActu
     celularNuevo->asignarID(ID);
     celularNuevo->asignarNumero(numero);
     celularNuevo->cambiarDeZona(zonaActual);
+    celularNuevo->cambiarEstado(LIBRE);
+    this->celularesExistentes->agregarDato(celularNuevo,1);
     //TERMINARRR!!!!!
    }
 
-void redTelefonica::agregarAntena(int ID,zonaCelu zonaACubrir,unsigned int capacidadMax){
+void redTelefonica::agregarAntena(int ID,zonaAntena zonaACubrir,unsigned int capacidadMax){
 
+    antena* antenaNueva;
+    antenaNueva->asignarID(ID);
+    antenaNueva->asignarZona(zonaACubrir);
+    antenaNueva->asignarCapacidadMax(capacidadMax);
+    antenasExistentes->agregarDato(antenaNueva,1);
 }
 
 
