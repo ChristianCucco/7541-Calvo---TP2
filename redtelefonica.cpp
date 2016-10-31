@@ -26,7 +26,6 @@ void redTelefonica::agregarCelular(unsigned int numero,int ID, zonaCelu zonaActu
     celularNuevo->cambiarDeZona(zonaActual);
     celularNuevo->cambiarEstado(LIBRE);
     this->celularesExistentes->agregarDato(celularNuevo,1);
-    //TERMINARRR!!!!!
    }
 
 void redTelefonica::agregarAntena(int ID,zonaAntena zonaACubrir,unsigned int capacidadMax){
@@ -73,7 +72,6 @@ llamadas redTelefonica::cortarLlamada(unsigned int destino,unsigned int horaInic
 
 void redTelefonica::cambiarDeCelular(unsigned int celular){
     this->celularActual->asignarNumero(celular);
-
 }
 
 
@@ -107,5 +105,25 @@ void redTelefonica::detalleCelulares(int idCelular){
     else
 {
         std::cout<<"No se encontro celular con ese ID"<<std::endl;
+}
+  }
+
+  void redTelefonica::detalleAntena(int idAntena){
+   this->antenasExistentes->iniciarCursor();
+   bool encontrado;
+   antena* antenaActual;
+   while ((this->antenasExistentes->avanzarCursor())&&(!encontrado))
+    {   antenaActual=antenasExistentes->obtenerCursor();
+        encontrado=antenaActual->obtenerID()==idAntena;}
+    if (encontrado)
+        {
+            std::cout<<"ID: "<<antenaActual->obtenerID()<<std::endl;
+            std::cout<<"Zona Cubierta: "<<antenaActual->obtenerZonaCubierta()<<std::endl;
+            std::cout<<"Capacidad Maxima: "<<antenaActual->obtenerCapacidadMaxima()<<std::endl;
+
+        }
+    else
+{
+        std::cout<<"No se encontro antena con ese ID"<<std::endl;
 }
   }
