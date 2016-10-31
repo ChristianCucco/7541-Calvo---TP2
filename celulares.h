@@ -1,8 +1,7 @@
+
 /*
  * celular.h
  *
- *  Created on: 08/10/2016
- *      Author: Matias
  */
 
 #ifndef CELULAR_H_
@@ -63,8 +62,10 @@ public:
 	//POS:cambia el estado del celular
 	void cambiarEstado(estado estadoNuevo);
 	//POS devuelve el estado actual
-	estado obtenerEstado();
-
+	std::string obtenerEstado();
+	//PRE:exista id correspondiente
+	//POS:devuelve en este mismo orden "id: (id) numero:(numero) estado (estado) Antena de ultima conexion (antena) " en un string
+	std::string mostrarDetalleCelular();
 
 
 };
