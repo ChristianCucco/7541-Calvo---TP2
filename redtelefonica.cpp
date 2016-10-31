@@ -77,3 +77,25 @@ mensaje redTelefonica::enviarMensaje(unsigned int destino,std::string texto, uns
         }
     return m;
 }
+
+std::string detalleCelulares(int idCelular)
+{   std::string mostrar = "";
+    (*celularesExistentes).iniciarCursor;
+    if *(this->(*celularesExistentes).obtenerCursor)!=NULL
+    {   bool sePuedeAvanzar=true;
+        while ((idCelular != *(this->(*celularesExistentes).obtenerCursor).celularID()) && (sePuedeAvanzar==true))
+            {
+                sePuedeAvanzar=((*celularesExistentes).avanzarCursor);
+            };
+    }
+    bool encontrado = (idCelular== *(this->(*celularesExistentes).obtenerCursor).celularID());
+    if (encontrado = true)
+        {
+            mostrar=celular.mostrarDetalleCelular();
+        }
+    else
+        {
+            mostrar="id no existente";
+        };
+    return mostrar;
+}
