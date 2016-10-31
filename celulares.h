@@ -1,11 +1,7 @@
-
 /*
  * celular.h
- *
  */
-#include <iostream>
-#include <string>
-#include <sstream>
+
 #ifndef CELULAR_H_
 #define CELULAR_H_
 
@@ -14,7 +10,7 @@ enum estado{
 	OCUPADO,//se encuentra dentro de una llamada
 };
 
-enum zonaCelu{
+enum zona{
     zona1,
     zona2,
     zona3,
@@ -24,7 +20,7 @@ enum zonaCelu{
 class celular{
 private:
 	unsigned int numero;
-	zonaCelu zonaActual;// el celular se conecta a la antena de la zona en la que se encuentra
+	zona zonaActual;// el celular se conecta a la antena de la zona en la que se encuentra
 	estado estadoActual;
 	celular* enLlamadaCon;//nose si va a ser necesario
 	int ID;
@@ -36,7 +32,7 @@ public:
 
 	//PRE ID debe ser unico al igual que numero
 	//POS: crea un celular con identificacion ID y numero de telefono numero
-	celular(unsigned int numero,int ID, zonaCelu zona);
+	celular(unsigned int numero,int ID, zona zona);
 	//POS devuelve el numero telefonico del celular
 	unsigned int numeroDeCelular();
 	//POS Devuelve el numero de ID del celular
@@ -55,19 +51,17 @@ public:
 	void verHistorialMensajesRecibidos();
 
 	//POS devuelve la zona
-	zonaCelu enDondeEsta();
+	zona enDondeEsta();
 
 	//PRE zona debe ser valida
 	//POS cambia la zona actual del celular
-	void cambiarDeZona(zonaCelu nuevaZona);
+	void cambiarDeZona(zona nuevaZona);
 	//PRE
 	//POS:cambia el estado del celular
 	void cambiarEstado(estado estadoNuevo);
 	//POS devuelve el estado actual
-	std::string obtenerEstado();
-	//PRE:exista id correspondiente
-	//POS:devuelve en este mismo orden "id: (id) numero:(numero) estado (estado) Antena de ultima conexion (antena) " en un string
-	std::string mostrarDetalleCelular();
+	estado obtenerEstado();
+
 
 
 };
