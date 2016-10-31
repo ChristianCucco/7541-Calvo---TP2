@@ -1,8 +1,5 @@
 /*
  * redTelefonica.h
- *
- *  Created on: 08/10/2016
- *      Author: Matias
  */
 
 #ifndef REDTELEFONICA_H_
@@ -48,7 +45,7 @@ class redTelefonica{
 
 	void agregarCelular(unsigned int numero,int ID, zonaCelu zonaActual);
 
-	void agregarAntena(int ID,zonaCelu zonaACubrir,unsigned int capacidadMax);
+	void agregarAntena(int ID,zonaAntena zonaACubrir,unsigned int capacidadMax);
 
 	//MODO CELULAR------------------------------------------------------
 	//PRE destino debe ser valido y >0
