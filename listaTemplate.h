@@ -113,3 +113,4 @@ template <class T>
 uint lista<T>::obtenerTam(){
 	return this-> tamanio;
 }
+#endif /* LISTATEMPLATE_H_ */
