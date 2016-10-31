@@ -66,6 +66,15 @@ class redTelefonica{
 	void cambiarDeCelular(unsigned int celular);
 
 	//MODO RedCentral-------------------------------------------------------
+
+	//PRE idAntena tiene que ser el id de la antena
+	//POS muestra los detalles de la antena correspondiente
+	void detalleAntena(int idAntena);
+
+	//PRE idCelular tiene que ser el id o celular del telefono
+	//POS muestra los detalles del celular correspondiente
+	void detalleCelulares(int idCelular);
+
 	//PRE celular1,2 deben ser numeros de celulares esxistentes
 	//POS muestra los registros de llamadas entre los celulares
 	std::string mostrarDetalleLlamadasEntre(unsigned int celular1, unsigned int celular2);
@@ -93,13 +102,6 @@ class redTelefonica{
 	//POS muestra las llamadas anuladas por la antena correspondiente
 	int llamadasAnuladas(int idAntena);
 
-	//PRE idAntena tiene que ser el id de la antena
-	//POS muestra los detalles de la antena correspondiente
-	std::string detalleAntena(int idAntena);
-
-	//PRE idCelular tiene que ser el id o celular del telefono
-	//POS muestra los detalles del celular correspondiente
-	void detalleCelulares(int idCelular);
 
 	void procesarArchivoMaestro();
 
