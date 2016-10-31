@@ -19,7 +19,7 @@ void redTelefonica::seleccionarModo(modo modoAIniciar){
     this->modoActual=modoAIniciar;
 }
 
-void redTelefonica::agregarCelular(unsigned int numero,int ID, zonaCelu zonaActual){
+void redTelefonica::agregarCelular(unsigned int numero,int ID, zona zonaActual){
     celular* celularNuevo;
     celularNuevo->asignarID(ID);
     celularNuevo->asignarNumero(numero);
@@ -28,7 +28,7 @@ void redTelefonica::agregarCelular(unsigned int numero,int ID, zonaCelu zonaActu
     this->celularesExistentes->agregarDato(celularNuevo,1);
    }
 
-void redTelefonica::agregarAntena(int ID,zonaAntena zonaACubrir,unsigned int capacidadMax){
+void redTelefonica::agregarAntena(int ID,zona zonaACubrir,unsigned int capacidadMax){
 
     antena* antenaNueva;
     antenaNueva->asignarID(ID);
@@ -63,6 +63,7 @@ llamadas redTelefonica::cortarLlamada(unsigned int destino,unsigned int horaInic
             duracion=((segEnUnDia-horaInicioEnSeg)+horaFinalEnSeg);
               }
         l.duracionLlamada=duracion;
+
     }
     return l;
 
