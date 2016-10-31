@@ -3,7 +3,9 @@
  * celular.h
  *
  */
-
+#include <iostream>
+#include <string>
+#include <sstream>
 #ifndef CELULAR_H_
 #define CELULAR_H_
 
