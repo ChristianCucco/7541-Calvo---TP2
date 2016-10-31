@@ -3,7 +3,7 @@
  */
 
 #include "antena.h"
-antena::antena(int ID, zonaAntena zonaACubrir,unsigned int capacidadMax){
+antena::antena(int ID, zona zonaACubrir,unsigned int capacidadMax){
 	this-> ID = ID;
 	this-> zonaCubierta = zonaACubrir;
 	this-> capacidadMax = capacidadMax;
@@ -39,14 +39,14 @@ unsigned int antena::obtenerLlamadasAnuladas()
 lista<estadisticas>* antena::obtenerEstadisticas()
     {return this->registrosEstadisticas;}
 
-zonaAntena antena::obtenerZonaCubierta()
+zona antena::obtenerZonaCubierta()
     {return this-> zonaCubierta;}
 
 void antena::asignarID(int ID){
 this->ID=ID;
 }
 
-void antena::asignarZona(zonaAntena zona){
+void antena::asignarZona(zona zona){
 this->zonaCubierta=zona;
 }
 
@@ -60,7 +60,7 @@ int antena::obtenerID(){
 	    return this->ID;
 	}
 
-zonaAntena antena::obtenerAntena(){
+zona antena::obtenerAntena(){
 	return this->zonaCubierta;
 	}
 
