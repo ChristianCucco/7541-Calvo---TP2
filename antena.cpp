@@ -1,8 +1,5 @@
 /*
  * antena.cpp
- *
- *  Created on: 29/10/2016
- *      Author: Matias
  */
 
 #include "antena.h"
@@ -44,6 +41,22 @@ lista<estadisticas>* antena::obtenerEstadisticas()
 
 zonaAntena antena::obtenerZonaCubierta()
     {return this-> zonaCubierta;}
+
+void antena::asignarID(int ID){
+this->ID=ID;
+}
+
+void antena::asignarZona(zonaAntena zona){
+this->zonaCubierta=zona;
+}
+
+
+void antena::asignarCapacidadMax(unsigned int maximo){
+this->capacidadMax=maximo;
+
+}
+
+
 
 //FALTAN POR HACER
 bool antena::procesarMensaje(unsigned int emisor,unsigned int remitente,std::string mensaje){
