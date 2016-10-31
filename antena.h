@@ -1,8 +1,5 @@
 /*
  * antena.h
- *
- *  Created on: 08/10/2016
- *      Author: Matias
  */
 
 #ifndef ANTENA_H_
@@ -41,6 +38,12 @@ public:
 	antena(int ID,zonaAntena zonaACubrir,unsigned int capacidadMax);
 	//POS bye bye antena
 	~antena();
+
+	void asignarID(int ID);
+
+	void asignarZona(zonaAntena zona);
+
+	void asignarCapacidadMax(unsigned int maximo);
 
 	//POS devuelve si hay espacio restante para realizar acciones
 	bool quedaCapacidad();
