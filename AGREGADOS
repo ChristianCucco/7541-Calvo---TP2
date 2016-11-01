@@ -1,0 +1,25 @@
+
+REDTELEFONICA.H
+
+celular* buscarCelularPorNumero(int numero);
+
+REDTELEFONICA.CPP
+
+celular* redTelefonica::buscarCelularPorNumero(int numero)
+{
+    this->celularesExistentes->iniciarCursor();
+   bool encontrado;
+   while ((this->celularesExistentes->avanzarCursor())&&(!encontrado))
+    {
+        celularActual=celularesExistentes->obtenerCursor();
+        encontrado=celularActual->numeroDeCelular()==numero;}
+    return celularActual;
+};
+
+-------------------------------
+REDTELEFONICA.CPP
+
+ redTelefonica::~redTelefonica(){}  (tiene que estar en el cpp para que corra, va creo, nose tengo sueño, lo habia escrito y corrio)
+ 
+ 
+ ------------------------------------
