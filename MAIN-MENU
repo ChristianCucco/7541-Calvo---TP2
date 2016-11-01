@@ -1,0 +1,126 @@
+/*
+ *
+ */
+#include "listaTemplate.h"
+#include <string>
+#include <iostream>
+#include <cstddef>
+using namespace std;
+#include "redTelefonica.h"
+#include "celulares.h"
+#include "nodoTemplate.h"
+//CREAR 1 ANTENA Y 1 CELULAR POR CADA DIRECTORIO EXISTENTE
+//
+
+
+void menuSistemaDeTelefonia()
+{
+        cout<<"A - seleccionar Modo(modo modoAIniciar,unsigned int celular)"<<endl;
+        cout<<"B - agregarCelular(unsigned int numero,int ID, zona zonaActual)"<<endl;
+        cout<<"C - agregarAntena(int ID,zona zonaACubrir,unsigned int capacidadMax)"<<endl;
+        cout<<"D - enviarMensaje(unsigned int destino,std::string texto, unsigned int hora)"<<endl;
+        cout<<"E - realizarLlamada(uint destino,uint horaLlamada)"<<endl;
+        cout<<"F - cortarLlamada(unsigned int horaFinalEnSeg)"<<endl;
+        cout<<"G - cambiarDeCelular(unsigned int celular)"<<endl;
+        cout<<"H - detalleAntena(int idAntena)"<<endl;
+        cout<<"I - detalleCelulares(int idCelular)"<<endl;
+        cout<<"J - detalleLlamadasEntre(unsigned int celular1, unsigned int celular2)"<<endl;
+        cout<<"K - mensajesEntre(unsigned int celular1, unsigned int celular2)"<<endl;
+        cout<<"L - celularMasHablo()"<<endl;
+        cout<<"M - elcularMasLlamo() "<<endl;
+        cout<<"N - celularMasOcupado()"<<endl;
+        cout<<"O - celularMasLlamaron()"<<endl;
+        cout<<"P - detalleLlamadasPor(unsigned int celular)"<<endl;
+        cout<<"Q - detalleLlamadasPara(unsigned int celular)"<<endl;
+        cout<<"R - conectadosMax(int idAntena)"<<endl;
+        cout<<"S - llamadasAnuladas(int idAntena)"<<endl;
+        cout<<"T - procesarArchivoMaestro()"<<endl;
+        cout<<"U - procesarMensajes()"<<endl;
+        cout<<"V - obtenerModoActual()"<<endl;
+
+        cout<<"X - para salir del programa"<<endl;
+}
+
+
+void funcionamientoSistemaDeTelefonia()
+{
+    char opcion;
+    do {
+        menuSistemaDeTelefonia();
+
+        cin>>opcion;
+        opcion = toupper(opcion);
+        switch (opcion)
+        {
+
+
+            default : opcion= 'X';
+        }
+    }while(opcion != 'X');
+}
+void menuCelular()
+{
+    cout<<"A - Mostrar mensajes nuevos"<<endl;
+    cout<<"B - Mostrar historial de mensajes emitidos"<<endl;
+    cout<<"C - Mostrar historial de mensajes recibidos"<<endl;
+    cout<<"D - Emitir mensaje"<<endl;
+    cout<<"E - Cambiar Celular"<<endl;
+    cout<<"X - Salir"<<endl;
+}
+
+void funcionamientoDeCelular(int numero)
+{
+redTelefonica red;
+char opcion;
+    do {
+       celular*celularActual= red.buscarCelularPorNumero(numero);
+        menuCelular();
+
+        cin>>opcion;
+        opcion = toupper(opcion);
+        switch (opcion)
+        {
+            case'A': {cout<<"ingresar minuto del dia(0-1439)"<<endl;unsigned int minuto;
+                     cin>>minuto;celularActual->verMensajesNuevos(minuto);break;}
+            case'B':{(*celularActual).verHistorialMensajesEnviados();break;}
+            case'C':{(*celularActual).verHistorialMensajesRecibidos();break;}
+            case'D':{unsigned int numeroDestinatario;std::string texto="";unsigned int hora;
+                    cout<<"ingresar el numero del reseptor del mensaje"<<endl;cin>>numeroDestinatario;
+                    cout<<"ingresa mensaje de texto"<<endl;getline(cin,texto);
+                    cout<<"ingresar minuto (debe encontrarse entre 0-1439)"<<endl;cin>>hora;
+                    red.enviarMensaje(numeroDestinatario,texto,hora);break;}
+            case'E':{cout<<"ingrese el nuevo numero"<<endl;unsigned int numero;cin>>numero;
+            celularActual= red.buscarCelularPorNumero(numero);}
+
+            default: opcion = 'X';
+        };
+    }while(opcion != 'X');
+
+}
+
+void elegirFuncionamiento()
+{
+    char opcion;
+    int numero;
+    do {
+        cout<<"A - funcionamiento de sistema  de  telefonia"<<endl;
+        cout<<"B - funcionamiento de celular"<<endl;
+        cout<<"X - para salir del programa"<<endl;
+        cin>>opcion;
+        opcion = toupper(opcion);
+        switch (opcion)
+        {
+            case 'A': funcionamientoSistemaDeTelefonia();break;
+            case 'B': cout<<"ingresar numero"<<endl;cin>>numero;funcionamientoDeCelular(numero);break;
+            default : opcion= 'X';
+        }
+    }while(opcion != 'X');
+};
+
+int main(){
+
+elegirFuncionamiento();
+cout<<"PROGRAMA FINALIZADO."<<endl;
+
+	return 0;
+}
