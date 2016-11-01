@@ -59,7 +59,7 @@ void funcionamientoSistemaDeTelefonia()
             case'M':{;break;}
             case'N':{cout<<"ingrese id de la antena"<<endl;int antena;cin>>antena;redSistema.detalleAntena(antena);break;}
             case'O':{cout<<"ingrese el numero de celular"<<endl;int celular;cin>>celular;redSistema.detalleCelulares(celular);break;}
-            case'p':{;break;}
+            case'P':{;break;}
 
             default : opcion= 'X';
         }
