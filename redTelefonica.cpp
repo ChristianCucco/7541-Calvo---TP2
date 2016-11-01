@@ -5,18 +5,41 @@
 #include "redTelefonica.h"
 #include <iostream>
 
+#include <sstream>
+
+template <typename T>
+std::string to_string(T value)
+{
+	std::ostringstream os ;
+	os << value ;
+	return os.str() ;
+}
 
 redTelefonica::redTelefonica(){
     this->celularesExistentes=new lista<celular*>;
     this->antenasExistentes=new lista<antena*>;
     this->mensajesEnCola=new lista<mensaje*>;
-    this->llamadasActivas=new lista<llamadas*>;
+    this->mensajesHistorico=new lista<mensaje*>;
+    this->llamadasActivas=new lista<llamada*>;
     this->modoActual=aDefinir;
     this->celularActual=0;
 }
 
-void redTelefonica::seleccionarModo(modo modoAIniciar){
-    this->modoActual=modoAIniciar;
+bool redTelefonica::seleccionarModo(modo modoAIniciar,unsigned int celularNum){
+    bool encontrado = true;
+    if (celularNum){
+    celular* actualCelular;
+    this->celularesExistentes->iniciarCursor();
+    while( this->celularesExistentes->avanzarCursor()&&!encontrado){
+    	actualCelular = this->celularesExistentes->obtenerCursor();
+    	encontrado = (celularNum == actualCelular->numeroDeCelular());
+
+    }
+    if (encontrado){
+    	this->modoActual=modoAIniciar;
+    }
+    }
+    return encontrado;
 }
 
 void redTelefonica::agregarCelular(unsigned int numero,int ID, zona zonaActual){
@@ -32,34 +55,48 @@ void redTelefonica::agregarAntena(int ID,zona zonaACubrir,unsigned int capacidad
 }
 
 
-bool redTelefonica::realizarLlamada(){
+bool redTelefonica::realizarLlamada(uint destino,uint horaLlamada){
     bool puedeLlamar=(this->celularActual->obtenerEstado()==LIBRE);
-    if (puedeLlamar){
+    this-> celularesExistentes ->iniciarCursor();
+    bool encontrado = false;
+    celular* actual;
+    while (celularesExistentes->avanzarCursor()&&(!encontrado)){
+    	actual = celularesExistentes->obtenerCursor();
+    	if ((actual->numeroDeCelular()==destino)&&(actual->obtenerEstado()==LIBRE)){
+    		encontrado = true;
+    	}
+    }
+    if (puedeLlamar && encontrado){
             this->celularActual->cambiarEstado(OCUPADO);
+            actual->cambiarEstado(OCUPADO);
+            llamada* nuevaLlamada = new llamada;
+            nuevaLlamada->duracionLlamada = horaLlamada;
+            nuevaLlamada->numeroEmisor = this->celularActual;
+            nuevaLlamada->numeroReceptor = actual;
+            nuevaLlamada->activa = true;
+            llamadasActivas->agregarDato(nuevaLlamada,0);
             }
     return puedeLlamar;
 }
 
 
-llamadas redTelefonica::cortarLlamada(unsigned int destino,unsigned int horaInicioEnSeg,unsigned int horaFinalEnSeg){
-    llamadas l;
+void redTelefonica::cortarLlamada(unsigned int horaFinal){
     if (this->celularActual->obtenerEstado()==OCUPADO){
         this->celularActual->cambiarEstado(LIBRE);
-        l.horaInicio=horaInicioEnSeg;
-        l.numeroEmisor=this->celularActual->numeroDeCelular();
-        l.numeroRemitente=destino;
-        unsigned int duracion;
-        if(horaFinalEnSeg>horaInicioEnSeg){
-            duracion=(horaFinalEnSeg-horaInicioEnSeg);
+        this-> llamadasActivas ->iniciarCursor();
+            bool encontrado = false;
+            llamada* llamada;
+            while (llamadasActivas->avanzarCursor()&&(!encontrado)){
+            	llamada = llamadasActivas->obtenerCursor();
+            	if ((llamada->numeroEmisor==this->celularActual)&&(llamada->activa)){
+            		encontrado = true;
+            	}
+            }
+        if (encontrado){
+        	llamada->duracionLlamada = (horaFinal-(llamada->horaInicio));
+        	llamada->numeroEmisor->cambiarEstado(LIBRE);
         }
-        else {
-            unsigned int segEnUnDia=86400;
-            duracion=((segEnUnDia-horaInicioEnSeg)+horaFinalEnSeg);
-              }
-        l.duracionLlamada=duracion;
-
     }
-    return l;
 
     }
 
@@ -70,55 +107,261 @@ void redTelefonica::cambiarDeCelular(unsigned int celular){
 }
 
 
-mensaje redTelefonica::enviarMensaje(unsigned int destino,std::string texto, unsigned int hora)
-{
-    mensaje m;
-    if (this->celularActual->obtenerEstado()==LIBRE){
-        m.emisor=celularActual->numeroDeCelular();
-        m.receptor=destino;
-        m.hora=hora;
-        m.texto=texto;
-        }
-    return m;
-}
 
-void redTelefonica::detalleCelulares(int idCelular){
+celular* redTelefonica::detalleCelular(int idCelular){
    this->celularesExistentes->iniciarCursor();
    bool encontrado;
+   celular* celularActual;
    while ((this->celularesExistentes->avanzarCursor())&&(!encontrado))
     {
         celularActual=celularesExistentes->obtenerCursor();
         encontrado=celularActual->celularID()==idCelular;}
-    if (encontrado)
-        {
-            std::cout<<"ID: "<<celularActual->celularID()<<std::endl;
-            std::cout<<"Numero: "<<celularActual->numeroDeCelular()<<std::endl;
-            std::cout<<"Zona Actual: "<<celularActual->enDondeEsta()<<std::endl;
-            std::cout<<"Estado Actual: "<<celularActual->obtenerEstado()<<std::endl;
-
-        }
-    else
-{
-        std::cout<<"No se encontro celular con ese ID"<<std::endl;
+    if (!encontrado)
+        {celularActual = 0;}
+ return celularActual;
 }
-  }
 
-  void redTelefonica::detalleAntena(int idAntena){
+  antena* redTelefonica::detalleAntena(int idAntena){
    this->antenasExistentes->iniciarCursor();
    bool encontrado;
    antena* antenaActual;
    while ((this->antenasExistentes->avanzarCursor())&&(!encontrado))
     {   antenaActual=antenasExistentes->obtenerCursor();
         encontrado=antenaActual->obtenerID()==idAntena;}
-    if (encontrado)
+    if (!encontrado)
         {
-            std::cout<<"ID: "<<antenaActual->obtenerID()<<std::endl;
-            std::cout<<"Zona Cubierta: "<<antenaActual->obtenerZonaCubierta()<<std::endl;
-            std::cout<<"Capacidad Maxima: "<<antenaActual->obtenerCapacidadMaxima()<<std::endl;
-
-        }
-    else
-{
-        std::cout<<"No se encontro antena con ese ID"<<std::endl;
-}
+           antenaActual =0;
   }
+    return antenaActual;}
+
+ int redTelefonica::conectadosMax(int idAntena){
+	    this-> antenasExistentes ->iniciarCursor();
+	    bool encontrado = false;
+	    int max =0;
+	    antena* actual;
+	    while (antenasExistentes->avanzarCursor()&&(!encontrado)){
+	    	actual = antenasExistentes->obtenerCursor();
+	    	encontrado = (actual->obtenerID()==idAntena);
+	    }
+	    if (encontrado){
+	    	max = actual->obtenerMaxConexiones();
+	    }
+	    return max;
+ }
+ int redTelefonica::llamadasAnuladas(int idAntena){
+	    this-> antenasExistentes ->iniciarCursor();
+	    bool encontrado = false;
+	    int max =0;
+	    antena* actual;
+	    while (antenasExistentes->avanzarCursor()&&(!encontrado)){
+	    	actual = antenasExistentes->obtenerCursor();
+	    	encontrado = (actual->obtenerID()==idAntena);
+	    }
+	    if (encontrado){
+	    	max = actual->obtenerLlamadasAnuladas();
+	    }
+	    return max;
+ }
+ unsigned int redTelefonica::celularMasHablo(){
+	this->antenasExistentes->iniciarCursor();
+	this->celularesExistentes->iniciarCursor();
+	int cantidadMaxima =0;
+	celular* celularSupremo;
+	while (celularesExistentes->avanzarCursor()){
+		celular* actual = celularesExistentes->obtenerCursor();
+		int cantidad =0;
+		while (antenasExistentes->avanzarCursor()){
+			antena* antenaActual = antenasExistentes->obtenerCursor();
+			lista<estadisticas*>* stats = antenaActual->obtenerEstadisticas();
+			stats->iniciarCursor();
+			while (stats->avanzarCursor()){
+				estadisticas* actualStats = stats->obtenerCursor();
+				if (actualStats->numero == actual->numeroDeCelular()){
+					cantidad+=actualStats->tiempoHablado;
+				}
+			}
+		 }
+		if (cantidad>cantidadMaxima){
+			cantidadMaxima = cantidad;
+			celularSupremo = actual;
+		}
+	}
+	return celularSupremo->numeroDeCelular();
+ }
+
+ unsigned int redTelefonica::celularMasLlamo(){
+	this->antenasExistentes->iniciarCursor();
+	this->celularesExistentes->iniciarCursor();
+	int cantidadMaxima =0;
+	celular* celularSupremo;
+	while (celularesExistentes->avanzarCursor()){
+		celular* actual = celularesExistentes->obtenerCursor();
+		int cantidad =0;
+		while (antenasExistentes->avanzarCursor()){
+			antena* antenaActual = antenasExistentes->obtenerCursor();
+			lista<estadisticas*>* stats = antenaActual->obtenerEstadisticas();
+			stats->iniciarCursor();
+			while (stats->avanzarCursor()){
+				estadisticas* actualStats = stats->obtenerCursor();
+				if (actualStats->numero == actual->numeroDeCelular()){
+					cantidad+=actualStats->tiempoHablado;
+				}
+			}
+		 }
+		if (cantidad>cantidadMaxima){
+			cantidadMaxima = cantidad;
+			celularSupremo = actual;
+		}
+	}
+	return celularSupremo->numeroDeCelular();
+ }
+
+ unsigned int redTelefonica::celularMasLlamaron(){
+	this->antenasExistentes->iniciarCursor();
+	this->celularesExistentes->iniciarCursor();
+	int cantidadMaxima =0;
+	celular* celularSupremo;
+	while (celularesExistentes->avanzarCursor()){
+		celular* actual = celularesExistentes->obtenerCursor();
+		int cantidad =0;
+		while (antenasExistentes->avanzarCursor()){
+			antena* antenaActual = antenasExistentes->obtenerCursor();
+			lista<estadisticas*>* stats = antenaActual->obtenerEstadisticas();
+			stats->iniciarCursor();
+			while (stats->avanzarCursor()){
+				estadisticas* actualStats = stats->obtenerCursor();
+				if (actualStats->numero == actual->numeroDeCelular()){
+					cantidad+=actualStats->tiempoHablado;
+				}
+			}
+		 }
+		if (cantidad>cantidadMaxima){
+			cantidadMaxima = cantidad;
+			celularSupremo = actual;
+		}
+	}
+	return celularSupremo->numeroDeCelular();
+ }
+
+ unsigned int redTelefonica::celularMasOcupado(){
+	this->antenasExistentes->iniciarCursor();
+	this->celularesExistentes->iniciarCursor();
+	int cantidadMaxima =0;
+	celular* celularSupremo;
+	while (celularesExistentes->avanzarCursor()){
+		celular* actual = celularesExistentes->obtenerCursor();
+		int cantidad =0;
+		while (antenasExistentes->avanzarCursor()){
+			antena* antenaActual = antenasExistentes->obtenerCursor();
+			lista<estadisticas*>* stats = antenaActual->obtenerEstadisticas();
+			stats->iniciarCursor();
+			while (stats->avanzarCursor()){
+				estadisticas* actualStats = stats->obtenerCursor();
+				if (actualStats->numero == actual->numeroDeCelular()){
+					cantidad+=actualStats->vecesOcupado;
+				}
+			}
+		 }
+		if (cantidad>cantidadMaxima){
+			cantidadMaxima = cantidad;
+			celularSupremo = actual;
+		}
+	}
+	return celularSupremo->numeroDeCelular();
+ }
+
+
+ lista<llamada*>* redTelefonica::detalleLlamadasPor(unsigned int cel){
+	 this->llamadasActivas->iniciarCursor();
+	 lista<llamada*>* llamadasPorCel = new lista<llamada*>;
+	 while(llamadasActivas->avanzarCursor()){
+		 llamada* llamadaActual = llamadasActivas->obtenerCursor();
+		 if (llamadaActual->numeroEmisor->numeroDeCelular()==cel){
+			 llamadasPorCel->agregarDato(llamadaActual,0);
+		 }
+	 }
+	 return llamadasPorCel;
+ }
+ lista<llamada*>* redTelefonica::detalleLlamadasPara(unsigned int cel){
+	 this->llamadasActivas->iniciarCursor();
+	 lista<llamada*>* llamadasPorCel = new lista<llamada*>;
+	 while(llamadasActivas->avanzarCursor()){
+		 llamada* llamadaActual = llamadasActivas->obtenerCursor();
+		 if (llamadaActual->numeroReceptor->numeroDeCelular()==cel){
+			 llamadasPorCel->agregarDato(llamadaActual,0);
+		 }
+	 }
+	 return llamadasPorCel;
+ }
+ lista<llamada*>* redTelefonica::detalleLlamadasEntre(unsigned int cel1,unsigned int cel2){
+	 lista<llamada*>* cel1Hechas = this->detalleLlamadasPor(cel1);
+	 lista<llamada*>* cel2Hechas = this->detalleLlamadasPor(cel2);
+	 lista<llamada*>* entreAmbos = new lista<llamada*>;
+	 cel1Hechas->iniciarCursor();
+	 while(cel1Hechas->avanzarCursor()){
+		 llamada* actual = cel1Hechas->obtenerCursor();
+		 if(actual->numeroReceptor->numeroDeCelular()==cel2){
+			 entreAmbos->agregarDato(actual,0);
+		 }
+	 }
+	 cel2Hechas->iniciarCursor();
+	 while(cel2Hechas->avanzarCursor()){
+	 		 llamada* actual = cel2Hechas->obtenerCursor();
+	 		 if(actual->numeroReceptor->numeroDeCelular()==cel2){
+	 			 entreAmbos->agregarDato(actual,0);
+	 		 }
+	 	}
+	 return entreAmbos;
+ }
+
+ void redTelefonica::salir(){
+	 this->modoActual = aDefinir;
+	 this->celularActual = 0;
+ }
+ modo redTelefonica::obtenerModoActual(){
+	 return this->modoActual;
+ }
+void redTelefonica::enviarMensaje(unsigned int destino,std::string texto, unsigned int hora){
+	mensaje* mensajeTexto = new mensaje;
+	mensajeTexto->emisor = this->celularActual->numeroDeCelular();
+	mensajeTexto->receptor = destino;
+	mensajeTexto->texto = texto;
+	mensajeTexto->hora = hora;
+	this->mensajesEnCola->agregarDato(mensajeTexto,0);
+	this->mensajesHistorico->agregarDato(mensajeTexto,0);
+}
+
+lista<mensaje*>* redTelefonica::mensajesEntre(unsigned int cel1, unsigned int cel2){
+	this->mensajesHistorico->iniciarCursor();
+	lista<mensaje*>* entreAmbos = new lista<mensaje*>;
+	while(this->mensajesHistorico->avanzarCursor()){
+		mensaje* mensajeActual = this->mensajesHistorico->obtenerCursor();
+		unsigned int a = mensajeActual->emisor;
+		unsigned int b = mensajeActual->receptor;
+		if ((a==cel1 and b == cel2)or(a==cel2 and b==cel1)){
+			entreAmbos->agregarDato(mensajeActual,0);
+		}
+
+	}
+	return entreAmbos;
+}
+
+void redTelefonica::procesarArchivoMaestro(){
+	std::ofstream maestro ("TodasLasAcciones.txt");
+	this->llamadasActivas->iniciarCursor();
+	while(llamadasActivas->avanzarCursor()){
+		llamada* actual = llamadasActivas->obtenerCursor();
+		if (!actual->activa){
+	maestro << ("LLAMADA: "+to_string(actual->numeroEmisor->numeroDeCelular())+ "a"
+			+ to_string(actual->numeroReceptor->numeroDeCelular())+ " Duracion "
+			+to_string(actual->duracionLlamada)) << std::endl;
+	}}
+	this->mensajesHistorico->iniciarCursor();
+	while(this->mensajesHistorico->avanzarCursor()){
+		mensaje* actual = this-> mensajesHistorico->obtenerCursor();
+	maestro << ("MENSAJE: "+to_string(actual->emisor)+ "a"
+			+ to_string(actual->receptor)+ " Hora "
+			+to_string(actual->hora)) << std::endl;
+	}
+	maestro.close();
+}
