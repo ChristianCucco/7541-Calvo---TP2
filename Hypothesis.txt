@@ -1,0 +1,17 @@
+Nosotros tomamos las siguientes hipotesis para basarnos en algunas
+decisiones a la hora de implementar algunos comportamientos:
+
+-Durante una llamada el tiempo hablado se suma igual para ambos integrantes
+
+-Una llamada se considera anulada si esta dio ocupado al intentar realizarse
+
+-Para que una llamada no de ocupado, es necesario que las antenas involucradas
+(emisor receptor) tengan capacidad
+
+-Los mensajes se escriben en registros-historico en el orden y momento que fueron enviados
+
+-Enviar un mensaje no aumenta la cantidad de conexiones a la antena 
+(el celular no se conecta) pero si debe haber espacio libre para que se envie
+
+-En caso de que un mensaje no pudo ser enviado por falta de capacidad, es necesario
+reprocesarlos desde funcionamiento sistema donde seran enviados
